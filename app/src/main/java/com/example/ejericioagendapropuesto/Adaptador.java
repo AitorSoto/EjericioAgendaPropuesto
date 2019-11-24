@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 public class Adaptador extends RecyclerView.Adapter implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener{
     Context context;
     Holder holder;
-    View.OnClickListener listener;
+    View.OnClickListener listener, listenerImage;
     View.OnLongClickListener longClickListener;
     View.OnTouchListener listenerTouch;
+    onImageClick listenerImageView;
 
     public Adaptador(Context context){
         this.context = context;
@@ -28,7 +29,18 @@ public class Adaptador extends RecyclerView.Adapter implements View.OnClickListe
         view.setOnClickListener(this);
         view.setOnLongClickListener(this);
         view.setOnTouchListener(this);
+        holder.setClickImage(new onImageClick(){
+            @Override
+            public void onImageClickListener(Contacto contacto, View v) {
+                listenerImageView.onImageClickListener(contacto, v);
+            }
+        });
         return holder;
+    }
+
+    public void setClickImage(onImageClick listener){
+        if (listener!=null)
+            listenerImageView = listener;
     }
 
     @Override

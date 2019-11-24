@@ -1,6 +1,6 @@
 package com.example.ejericioagendapropuesto;
 
-public class Contacto {
+public class Contacto{
     private String nombre;
     private String apellidos;
     private long numTelefono;

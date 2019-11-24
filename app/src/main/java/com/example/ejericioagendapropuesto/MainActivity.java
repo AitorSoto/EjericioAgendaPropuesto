@@ -9,8 +9,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     Adaptador adaptador;
     FloatingActionButton fab;
     SwipeDetector swipeDetector;
+    TextView nombreContactoDialogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         contactos = new ArrayList<>();
         cargaDatos();
+        nombreContactoDialogo = (TextView)findViewById(R.id.nombreContacto);
         swipeDetector = new SwipeDetector();
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         adaptador = new Adaptador(this);
@@ -121,6 +125,19 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
                 return false;
+            }
+        });
+        adaptador.setClickImage(new onImageClick(){
+            @Override
+            public void onImageClickListener(Contacto contacto, View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+
+                String nombre = contacto.getNombre();
+                builder.setView(inflater.inflate(R.layout.dialogo, null));
+                builder.setCancelable(true);
+                Toast.makeText(MainActivity.this, nombre, Toast.LENGTH_SHORT).show();
+                builder.show();
             }
         });
         recyclerView.setAdapter(adaptador);
