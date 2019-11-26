@@ -132,11 +132,15 @@ public class MainActivity extends AppCompatActivity {
             public void onImageClickListener(Contacto contacto, View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 LayoutInflater inflater = MainActivity.this.getLayoutInflater();
+                View view = inflater.inflate(R.layout.dialogo, null);
 
                 String nombre = contacto.getNombre();
-                builder.setView(inflater.inflate(R.layout.dialogo, null));
+                builder.setView(view);
+
                 builder.setCancelable(true);
                 Toast.makeText(MainActivity.this, nombre, Toast.LENGTH_SHORT).show();
+                nombreContactoDialogo = (TextView)view.findViewById(R.id.nombreContacto);
+                nombreContactoDialogo.setText(nombre);
                 builder.show();
             }
         });
