@@ -157,7 +157,8 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Añadir contacto", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, AddContact.class);
+                startActivityForResult(intent, 2);
             }
         });
     }
@@ -165,13 +166,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_CANCELED){
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.MainActivity), "Edicion del contacto cancelada", Snackbar.LENGTH_SHORT);
-            snackbar.show();
-        }else{
-            contactos.set(posicionContactoEnLista, (Contacto)data.getExtras().getParcelable("SALIDA"));
-            recyclerView.setAdapter(adaptador);
+        if (requestCode == 1){
+            if (resultCode == RESULT_CANCELED){
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.MainActivity), "Edicion del contacto cancelada", Snackbar.LENGTH_SHORT);
+                snackbar.show();
+            }else{
+                contactos.set(posicionContactoEnLista, (Contacto)data.getExtras().getParcelable("SALIDA"));
+                recyclerView.setAdapter(adaptador);
+            }
         }
+        else if (requestCode == 2){
+            if (resultCode == RESULT_CANCELED){
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.MainActivity), "Contacto no añadido", Snackbar.LENGTH_SHORT);
+                snackbar.show();
+            }else{
+                contactos.add((Contacto)data.getExtras().getParcelable("SALIDA"));
+            }
+        }
+
     }
 
     public void cargaDatos(){

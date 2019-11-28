@@ -14,8 +14,10 @@
     </androidx.recyclerview.widget.RecyclerView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/plus"
-        android:layout_gravity="bottom|right|end"/>
+        android:layout_gravity="bottom|right|end"
+        android:layout_margin="3dp"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
