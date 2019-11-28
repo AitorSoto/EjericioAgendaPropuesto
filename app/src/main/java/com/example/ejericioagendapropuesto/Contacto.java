@@ -1,6 +1,9 @@
 package com.example.ejericioagendapropuesto;
 
-public class Contacto{
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Contacto implements Parcelable {
     private String nombre;
     private String apellidos;
     private long numTelefono;
@@ -58,4 +61,37 @@ public class Contacto{
                 ", correo='" + correo + '\'' +
                 '}';
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.nombre);
+        dest.writeString(this.apellidos);
+        dest.writeLong(this.numTelefono);
+        dest.writeString(this.correo);
+    }
+
+    protected Contacto(Parcel in) {
+        this.nombre = in.readString();
+        this.apellidos = in.readString();
+        this.numTelefono = in.readLong();
+        this.correo = in.readString();
+    }
+
+    public static final Parcelable.Creator<Contacto> CREATOR = new Parcelable.Creator<Contacto>() {
+        @Override
+        public Contacto createFromParcel(Parcel source) {
+            return new Contacto(source);
+        }
+
+        @Override
+        public Contacto[] newArray(int size) {
+            return new Contacto[size];
+        }
+    };
 }

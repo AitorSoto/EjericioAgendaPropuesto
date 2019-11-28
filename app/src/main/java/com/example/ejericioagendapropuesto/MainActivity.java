@@ -1,5 +1,6 @@
 package com.example.ejericioagendapropuesto;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton fab;
     SwipeDetector swipeDetector;
     TextView nombreContactoDialogo;
+    int posicionContactoEnLista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +98,10 @@ public class MainActivity extends AppCompatActivity {
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 }else{
-                    Toast.makeText(MainActivity.this, "Editar "+contactos.get(pos).getNombre(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this, EditContact.class);
+                    intent.putExtra("Contacto", contactos.get(pos));
+                    posicionContactoEnLista = pos;
+                    startActivityForResult(intent, 1);
                 }
 
             }
@@ -154,6 +160,18 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Añadir contacto", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_CANCELED){
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.MainActivity), "Edicion del contacto cancelada", Snackbar.LENGTH_SHORT);
+            snackbar.show();
+        }else{
+            contactos.set(posicionContactoEnLista, (Contacto)data.getExtras().getParcelable("SALIDA"));
+            recyclerView.setAdapter(adaptador);
+        }
     }
 
     public void cargaDatos(){
